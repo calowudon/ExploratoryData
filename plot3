@@ -1,0 +1,17 @@
+getData <- function(path) {
+ +    header <- colnames(read.table(path, header = TRUE, sep = ";", nrows = 0))
+ +    rows <- read.table(path, sep = ";", dec = ".", na.strings= "?", skip = 66637, nrows = 69517-66637)
+ +    colnames(rows) <- header
+ +    rows$Date <- strptime(paste(rows$Date, rows$Time, sep = " "), "%d/%m/%Y %H:%M:%S")
+ +    return(rows)
+ +}
+ +
+ +plot3 <- function(path) {
+ +    data <- getData(path)
+ +    png("plot3.png")
+ +    plot(data$Date, data$Sub_metering_1, type = "l", xlab = "", ylab = "Energy sub metering", col = "black")
+ +    lines(x = data$Date, y = data$Sub_metering_2, type = "l", xlab = "", ylab = "", col = "red")
+ +    lines(x = data$Date, y = data$Sub_metering_3, type = "l", xlab = "", ylab = "", col = "blue")
+ +    legend("topright", c("Sub_metering_1", "Sub_metering_2", "Sub_metering_3"), col = c("black", "red", "blue"), lty = c(1,1,1))
+ +    dev.off()
+ +} 
